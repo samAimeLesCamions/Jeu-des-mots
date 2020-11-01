@@ -1,3 +1,8 @@
+################################################################################
+
+#Copyright Enzo ROUSSEL, All right reserved.
+
+################################################################################
 import pygame
 from pygame.locals import *
 import requests
