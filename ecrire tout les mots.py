@@ -3,6 +3,11 @@
 #Copyright Enzo ROUSSEL, All right reserved.
 
 ################################################################################
+################################################################################
+
+#Copyright Enzo ROUSSEL, All right reserved.
+
+################################################################################
 import pygame
 from pygame.locals import *
 import requests
@@ -15,7 +20,7 @@ def printBlit(screen, string, coor="middle", taille=50, color=(255,255,255)):
     elif coor == "j":
         text = pygame.font.SysFont("arial", taille).render(string, 1, color)
         screen.blit(text, (screen.get_width()//2 - text.get_width()//2, screen.get_height()//2 - text.get_height()//2 + 50))
-        
+
     else:
         screen.blit(pygame.font.SysFont("arial", taille).render(string, 1, color), coor)
 
@@ -48,7 +53,7 @@ class mot:
 
     def get_current(self):
         return self.current
-        
+
 pygame.init()
 screen = pygame.display.set_mode((1920, 1080), FULLSCREEN)
 
@@ -69,6 +74,7 @@ while done:
     screen.fill((0,0,0))
     for event in pygame.event.get():
         if event.type == KEYDOWN:
+            print(event.key)
             if event.key == 113:
                 output += "a"
             if event.key == 119:
@@ -155,20 +161,41 @@ while done:
                 output += "à"
             if event.key == 93:
                 output += "$"
+            if event.key == 39:
+                output += "ù"
+            if event.key == 91:
+                accent = True
+                while accent:
+                    for e in pygame.event.get():
+                        if e.type == KEYDOWN:
+                            if e.key == K_e:
+                                output += "ê"
+                            elif e.key == K_i:
+                                output += "î"
+                            elif e.key == K_o:
+                                output += "ô"
+                            elif e.key == K_q:
+                                output += "â"
+                            elif e.key == K_u:
+                                output += "û"
+                            else:
+                                output += "^"
+                            accent = False
+
             if event.key == K_BACKSPACE:
                 output = output[:-1]
             if event.key == K_SPACE:
                 output += " "
             if event.key == K_ESCAPE:
                 pSave.sauvegarder()
-                
+
             if output == motCurrent:
                 pSave.add_one()
                 motCurrent = mots[pSave.current]
                 definition = get_def(motCurrent)
                 pSave.sauvegarder()
                 output = ""
-                
+
     printBlit(screen, f"mot: {motCurrent}")
     if output == motCurrent[:len(output)]:
         color = (0,200,0)
@@ -181,8 +208,10 @@ while done:
                 printBlit(screen, ligne, (0, 130+i*15), 15)
             else:
                 printBlit(screen, ligne, (0, i*15), 15)
-                
     except:
         pass
 
+    printBlit(screen, " © Copyrigh Enzo ROUSSEL - 2020", (1745, 1068), 10)
+
     pygame.display.flip()
+
